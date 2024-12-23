@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+
+{% block content %}
+    <section class="post">
+        <h1 class="post__title">{{ post.title }}</h1>
+        <div class="flex-row">
+            <p class="post__author">
+                By: {{ post.author }}
+            </p>
+            <p class="post__date">
+                Publish date: {{ post.created_at|date:'d F, Y' }}
+            </p>
+        </div>
+        <p class="post__body">{{ post.body }}</p>
+    </section>
+    <div class="post-flex-row">
+        <p class="go-back">
+            <a href="{% url 'blog:post-list' %}">Go Home</a>
+        </p>
+
+        {% if user.is_authenticated and user == post.author %}
+            <div class="btn-box">
+                <a href="{% url 'blog:post-update' post.slug %}">Edit Post</a>
+                <a href="{% url 'blog:post-delete' post.slug %}">Delete Post</a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% block dialog %}
+    {% endblock  %}
+
+{% endblock %}

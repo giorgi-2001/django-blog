@@ -1,0 +1,15 @@
+{% extends 'blog/post_detail.html' %}
+
+{% block dialog %}
+    <form class="dialog" method="post">
+        <h1>Do You really want to delete this post?</h1>
+        {% csrf_token %}
+
+        {{ form }}
+        <div class="dialog__btn-box">
+            <a href="{% url 'blog:post-detail' post.slug %}">No Cancel</a>
+            <button>Yes Delete</button>
+        </div>
+    </form>
+
+{% endblock %}

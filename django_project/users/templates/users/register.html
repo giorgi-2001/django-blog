@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+
+{% block content %}
+    <form class="post post-form login-form" method="post">
+        <h1 class="post__title">Register to our website:</h1>
+        {% csrf_token %}
+        {{ form }}
+        <div class="flex-row">
+            <button>Sign up</button>
+            <p class="post__date">
+                Already have an account? 
+                <a class="login-link" href="{% url 'users:login' %}">Login</a>
+            </p>
+            
+        </div>
+    </form>
+{% endblock %}

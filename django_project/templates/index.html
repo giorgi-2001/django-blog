@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav  wrapper">
+            <h1>
+                <a href="{% url 'blog:post-list' %}">Blog App</a>
+            </h1>
+            {% if user.is_authenticated %}
+            <div class="nav-right logout">
+                <a href="{% url 'blog:post-create' %}">New Post</a>
+                <form method="post" action="{% url 'users:logout' %}">
+                    {% csrf_token %}
+                    <button>
+                        Logout
+                    </button>
+                </form>
+            </div>
+            {% else %}
+                <div class="nav-right">
+                    <a href="{% url 'users:register' %}">Sign up</a>
+                    <a href="{% url 'users:login' %}">Login</a>
+                </div>
+            {% endif %}
+        </nav>
+    </header>
+    <main class="main wrapper">
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

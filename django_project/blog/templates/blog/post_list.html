@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Posts
+{% endblock %}
+
+
+{% block content %}
+    {% if posts %}
+        {% for post in posts %}
+            <article class="post">
+                <h2 class="post__title">
+                    <a href="{% url 'blog:post-detail' post.slug %}">
+                        {{ post.title }}
+                    </a>
+                </h2>
+                <div class="flex-row">
+                    <p class="post__author">
+                        By: {{ post.author }}
+                    </p>
+                    <p class="post__date">
+                        Publish date: {{ post.created_at|date:'d F, Y' }}
+                    </p>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>No posts yet...</p>
+    {% endif %}
+{% endblock %}

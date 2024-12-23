@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Log in
+{% endblock %}
+
+
+{% block content %}
+    <form class="post post-form login-form" method="post">
+        <h1 class="post__title">Log in</h1>
+        {% csrf_token %}
+        {{ form }}
+        <div class="flex-row">
+            <button>Login</button>
+            <p class="post__date">
+                Already have an account? 
+                <a class="login-link" href="{% url 'users:register' %}">Sign up</a>
+            </p>
+            
+        </div>
+    </form>
+{% endblock %}

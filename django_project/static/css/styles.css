@@ -1,0 +1,331 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --color-red-dark: #b00000;
+    --color-red-light: #ffafaf;
+    --color-accent: #9346ff;
+    --color-gray-light: #eee;
+    --color-gray-medium: #bbb;
+    --color-gray-semidark: #999;
+    --color-gray-dark: #444;
+}
+
+body {
+    background-color: var(--color-gray-medium);
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+.wrapper {
+    max-width: 920px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+
+.header {
+    background-color: black;
+    color: white;
+    padding-block: 1rem;
+    margin-bottom: 2rem;
+
+    .nav {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+
+        a:hover {
+            color: #9346ff;
+            text-decoration: underline;
+        }
+    }
+}
+
+
+.post {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--color-gray-light);
+    border-radius: 3px;
+    border: 1px solid var(--color-gray-semidark);
+
+    .post__title {
+        margin-bottom: 1rem;
+    }
+
+    .post__title a:hover {
+        color: #9346ff;
+        text-decoration: underline;
+    }
+
+    .post__body {
+        font-size: 1.2rem;
+        margin-top: 1rem;
+        white-space: pre-wrap;
+    }
+
+    .flex-row {
+        display: flex;
+        gap: 2rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .post__date,
+    .post__author {
+        font-weight: bold;
+        color: var(--color-gray-dark);
+        font-size: 0.9rem;
+    }
+}
+
+.go-back {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-left: 1rem;
+}
+
+.go-back:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+.post-form {
+    .post__title {
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        font-size: 1.5rem;
+        width: calc(fit-content + 10%);
+        border-bottom: 3px solid var(--color-gray-semidark);
+    }
+
+    input,
+    label,
+    textarea {
+        display: block;
+        width: 100%;
+    }
+
+    input,
+    textarea {
+        font-size: inherit;
+        padding: 6px 10px;
+        margin-bottom: 1rem;
+        border: 1px solid var(--color-gray-semidark);
+        border-radius: 3px;
+    }
+
+    :nth-of-type(3) {
+        width: 50%;
+    }
+
+
+    label {
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: var(--color-gray-dark);
+        padding-left: 0.5rem;
+        margin-bottom: 3px;
+    }
+
+    button {
+        border: none;
+        background-color: var(--color-accent);
+        border-radius: 4px;
+        padding: 0.5rem 1.5rem;
+        color: white;
+        font-size: inherit;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+    button:focus-visible {
+        opacity: 0.5;
+    }
+}
+
+
+.login-form {
+    max-width: 650px;
+    margin-inline: auto;
+
+    :nth-of-type(3) {
+        width: 100%
+    }
+}
+
+
+.login-link {
+    color: var(--color-accent);
+    font-size: 1rem;
+    font-weight: bold;
+    margin-left: 1rem;
+}
+
+.login-link:hover {
+    color: var(--color-gray-dark);
+    text-decoration: underline;
+}
+
+.errorlist {
+    list-style-type: none;
+    padding: 0;
+    background-color: var(--color-red-light);
+    border-radius: 4px;
+    border: 2px solid var(--color-red-dark);
+    color: var(--color-red-dark);
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-block: 0.5rem;
+
+    li {
+        padding: 5px;
+        text-align: center;
+    }
+}
+
+
+.nav-right,
+.logout {
+    margin-left: auto;
+
+    a {
+        margin-left: 2rem;
+    }
+
+}
+
+
+.logout {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    justify-content: space-between;
+    margin-left: 0;
+    flex-grow: 1;
+
+    button {
+        border: 3px solid var(--color-accent);
+        background-color: transparent;
+        border-radius: 4px;
+        padding: 0.4rem 1rem;
+        color: var(--color-accent);
+        font-size: inherit;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s linear;
+    }
+
+    button:hover {
+        border-color: transparent;
+        color: white;
+        background-color: var(--color-accent);
+        transition: 0.3s linear;
+    }
+
+    button:focus {
+        opacity: 0.5;
+    }
+
+    a {
+        margin-left: unset;
+    }
+}
+
+
+.post-flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.btn-box {
+    padding-right: 2rem;
+
+    a {
+        padding: 0.5rem 1rem;
+        background-color: Var(--color-gray-light);
+        margin-left: 2rem;
+        border: 1px solid var(--color-gray-semidark);
+        color: var(--color-gray-dark);
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    a:hover {
+        opacity: 0.7;
+    }
+
+    a:nth-of-type(2) {
+        color: var(--color-red-dark);
+        border-color: var(--color-red-dark);
+        background-color: var(--color-red-light);
+    }
+}
+
+
+.dialog {
+    margin-top: 3rem;
+    width: fit-content;
+    margin-inline: auto;
+    background: var(--color-red-light);
+    padding: 1.5rem;
+    border: 3px solid var(--color-red-dark);
+    border-radius: 4px;
+
+    h1 {
+        color: var(--color-red-dark);
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.dialog__btn-box {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-evenly;
+
+    a,
+    button {
+        padding: 0.5rem 1rem;
+        background-color: Var(--color-gray-light);
+        border: 1px solid var(--color-gray-semidark);
+        color: var(--color-gray-dark);
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    button {
+        font-size: inherit;
+        cursor: pointer;
+
+        background-color: var(--color-red-dark);
+        border-color: var(--color-red-dark);
+        color: white;
+    }
+
+    button:hover {
+        background-color: red;
+    }
+
+    a:hover {
+        background-color: white;
+    }
+}
