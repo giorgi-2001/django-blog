@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+
+{% block content %}
+    <section class="post profile">
+        <h1 class="post__title">Profile</h1>
+        <div class="flex-row user-flex-row">
+            <img src="{{ user.profile.image.url }}" alt="avatar">
+            <p class="post__body">{{ user.username }}</p>
+        </div>
+        <form class="post-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ u_form }}
+            {{ p_form }}
+            <button>Update</button>
+        </form>
+    </section>
+{% endblock %}
