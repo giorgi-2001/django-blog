@@ -19,6 +19,7 @@
             {% if user.is_authenticated %}
             <div class="nav-right logout">
                 <a href="{% url 'blog:post-create' %}">New Post</a>
+                <a href="{% url 'blog:user-posts' user.username %}">My Posts</a>
                 <a href="{% url 'users:profile' %}">Profile</a>
                 <form method="post" action="{% url 'users:logout' %}">
                     {% csrf_token %}
@@ -35,9 +36,25 @@
             {% endif %}
         </nav>
     </header>
+
     <main class="main wrapper">
         {% block content %}
         {% endblock %}
     </main>
+
+    <footer class="footer">
+        <p>&copy;Giorgi's Django Blog App,</p>
+        <p id="current-date"></p>
+    </footer>
+
+    <script>
+        const main = () => {
+            dateElement = document.getElementById("current-date")
+            year = new Date().getFullYear()
+            dateElement.textContent = year
+        }
+
+        document.addEventListener("DOMContentLoaded", () => main())
+    </script>
 </body>
 </html>
