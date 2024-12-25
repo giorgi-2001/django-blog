@@ -1,12 +1,18 @@
 {% extends 'index.html' %}
 
 {% block title %}
-    Posts
+    {{ view.kwargs.author }}'s Posts
 {% endblock %}
 
 
 {% block content %}
     {% if posts %}
+
+        {% if view.kwargs.author == request.user.username %}
+            <h1 class="page-title">Your Posts</h1> <hr>
+        {% else %}
+            <h1 class="page-title">{{ view.kwargs.author }}'s Posts</h1> <hr>
+        {% endif %}
         
         {% for post in posts %}
             <article class="post post-flex">
@@ -19,10 +25,7 @@
                     </h2>
                     <div class="flex-row">
                         <p class="post__author">
-                            By: 
-                            <a href="{% url 'blog:user-posts' post.author.username %}">
-                                {{ post.author }}
-                            </a>
+                            By: {{ post.author }}
                         </p>
                         <p class="post__date">
                             Publish date: {{ post.created_at|date:'d F, Y' }}
