@@ -1,15 +1,14 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.views import generic
-from .forms import UserUpdateForm, ProfileUpdateForm
+from .forms import UserUpdateForm, ProfileUpdateForm, UserRegisterForm
 
 
 class UserRegister(generic.CreateView):
     template_name = "users/register.html"
-    form_class = UserCreationForm
+    form_class = UserRegisterForm
 
     def form_valid(self, form):
         login(self.request, form.save())

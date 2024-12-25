@@ -469,3 +469,30 @@ a {
 .page-title+hr {
     margin-bottom: 2rem;
 }
+
+.password-reset {
+    display: flex;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    justify-content: center;
+    gap: 1rem;
+    font-weight: bold;
+
+    a {
+        color: var(--color-accent)
+    }
+
+    p {
+        color: var(--color-gray-dark);
+    }
+
+    a:hover {
+        color: var(--color-gray-dark);
+        text-decoration: underline;
+    }
+}
+
+
+.email-sent-conf p {
+    margin-top: 2rem;
+}
