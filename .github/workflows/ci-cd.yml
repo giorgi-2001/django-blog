@@ -1,0 +1,86 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - "**"
+
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  # Job to run tests and static analysis on push
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    env:
+      EMAIL_HOST_USER: ${{ EMAIL_HOST_USER }}
+      EMAIL_HOST_PASSWORD: ${{ EMAIL_HOST_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.4'
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker-compose -y
+
+      - name: Set up Docker Compose
+        run: docker-compose -f docker-compose.yml up -d
+
+      - name: Run tests in Docker container
+        run: docker-compose exec -T django-PP pytest --maxfail=1 --disable-warnings
+
+      - name: Shut down Docker Compose
+        run: docker-compose down
+
+  # Job to build and publish Docker image on pull request
+  publish-docker:
+    name: Build and Publish Docker Images
+    runs-on: ubuntu-latest
+    needs: run-tests
+
+    env:
+      EMAIL_HOST_USER: ${{ EMAIL_HOST_USER }}
+      EMAIL_HOST_PASSWORD: ${{ EMAIL_HOST_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          docker buildx build --push --platform linux/amd64,linux/arm64 \
+            -t ghcr.io/${{ github.repository }}/app:v${{ github.event.number }} .
