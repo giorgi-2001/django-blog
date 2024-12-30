@@ -6,12 +6,14 @@ from PIL import Image
 import os
 
 from blog.models import Post, User
+from users.forms import UserRegisterForm, UserUpdateForm
 
 
 @pytest.fixture
 def user():
     return User.objects.create(
         username="TestUser",
+        email="testuser@user.com",
         password="newpassword123"
     )
 
@@ -58,7 +60,35 @@ def profile_with_img(user, large_image):
     user.profile.save()
 
     yield user.profile
-    
+
     if os.path.exists(user.profile.image.path):
         os.remove(user.profile.image.path)
 
+
+@pytest.fixture
+def register_form_factory():
+    def register_form(username, email, password1, password2):
+        data = {
+            "username": username,
+            "email": email,
+            "password1": password1,
+            "password2": password2
+        }
+        return UserRegisterForm(data=data)
+    return register_form
+
+
+@pytest.fixture
+def update_form_factory(user):
+    User.objects.create( # dublicate user
+        username="dublicate",
+        email="dublicate@user.com",
+        password="newpassword123"
+    )
+    def update_form(username, email):
+        data = {
+            "username": username,
+            "email": email,
+        }
+        return UserUpdateForm(data=data, instance=user)
+    return update_form
