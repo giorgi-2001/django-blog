@@ -23,6 +23,7 @@ class UserPosts(generic.ListView):
         author = User.objects.get(username=username)
         return Post.objects.filter(author=author).order_by("-created_at").all()
 
+
 class PostDetail(generic.DetailView):
     model = Post
     template_name = "blog/post_detail.html"

@@ -9,13 +9,24 @@ from blog.models import Post, User
 from users.forms import UserRegisterForm, UserUpdateForm
 
 
-@pytest.fixture
+@pytest.fixture()
 def user():
     return User.objects.create(
         username="TestUser",
         email="testuser@user.com",
         password="newpassword123"
     )
+
+
+@pytest.fixture
+def user_login(client):
+    user = User.objects.create_user(
+        username="LogedInUser",
+        email="logedin@user.com",
+        password="newpassword123"
+    )
+    client.login(username="LogedInUser", password="newpassword123")
+    return user
 
 
 @pytest.fixture
