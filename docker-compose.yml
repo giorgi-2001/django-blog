@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  django-app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django_project:/app
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+    image: django-blog:v1
+    container_name: django-app
+    command: gunicorn project.wsgi:application --bind 0.0.0.0:8000
+    depends_on:
+      - db
+
+  migrations:
+    container_name: migrations
+    restart: on-failure
+    build: .
+    volumes:
+      - ./django_project:/app
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    command: >
+      sh -c "python manage.py makemigrations && python manage.py migrate"
+    depends_on:
+      - django-app
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/
+      - ./django_project/static:/static
+      - ./django_project/media:/media
+    depends_on:
+      - django-app
+
+volumes:
+  pg-data:

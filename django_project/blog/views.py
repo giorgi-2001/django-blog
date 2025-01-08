@@ -1,16 +1,28 @@
 from django.views import generic
 from django.urls import reverse_lazy
-from .models import Post
+from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .models import Post
 
 
 class PostList(generic.ListView):
+    model = Post
     template_name = "blog/post_list.html"
     context_object_name = "posts"
+    ordering = "-created_at"
+    paginate_by = 5
+
+
+class UserPosts(generic.ListView):
+    template_name = "blog/user_posts.html"
+    context_object_name = "posts"
+    paginate_by = 5
 
     def get_queryset(self):
-        return Post.objects.all().order_by("-created_at")
-    
+        username = self.kwargs.get("author")
+        author = User.objects.get(username=username)
+        return Post.objects.filter(author=author).order_by("-created_at").all()
+
 
 class PostDetail(generic.DetailView):
     model = Post

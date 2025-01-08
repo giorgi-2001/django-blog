@@ -1,0 +1,89 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    {{ view.kwargs.author }}'s Posts
+{% endblock %}
+
+
+{% block content %}
+    {% if posts %}
+
+        {% if view.kwargs.author == request.user.username %}
+            <h1 class="page-title">Your Posts</h1> <hr>
+        {% else %}
+            <h1 class="page-title">{{ view.kwargs.author }}'s Posts</h1> <hr>
+        {% endif %}
+        
+        {% for post in posts %}
+            <article class="post post-flex">
+                <img src="{{ post.author.profile.image.url }}" alt="avatar">
+                <div>
+                    <h2 class="post__title">
+                        <a href="{% url 'blog:post-detail' post.slug %}">
+                            {{ post.title }}
+                        </a>
+                    </h2>
+                    <div class="flex-row">
+                        <p class="post__author">
+                            By: {{ post.author }}
+                        </p>
+                        <p class="post__date">
+                            Publish date: {{ post.created_at|date:'d F, Y' }}
+                        </p>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>No posts yet...</p>
+    {% endif %}
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            <!-- First Page -->
+            {% if page_obj.number > 3 %}
+                <a href="?page=1">1</a>
+                {% if page_obj.number > 4 %}
+                    <span>...</span>
+                {% endif %}
+            {% endif %}
+
+            <!-- Two Pages Before Current -->
+            {% for num in page_obj.paginator.page_range %}
+                {% if num >= page_obj.number|add:-2 and num < page_obj.number %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Current Page -->
+            <span class="current">{{ page_obj.number }}</span>
+
+            <!-- Two Pages After Current -->
+            {% for num in page_obj.paginator.page_range %}
+                {% if num > page_obj.number and num <= page_obj.number|add:2 %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Last Page -->
+            {% if page_obj.number < page_obj.paginator.num_pages|add:-2 %}
+                {% if page_obj.number < page_obj.paginator.num_pages|add:-3 %}
+                    <span>...</span>
+                {% endif %}
+                <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+            {% endif %}
+
+            <!-- Previous Page -->
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <!-- Next Page -->
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </section>
+        
+    {% endif %}
+
+{% endblock %}
