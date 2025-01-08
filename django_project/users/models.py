@@ -12,18 +12,6 @@ class Profile(models.Model):
     
 
     def save(self, *args, **kwargs):
-        try:
-            old_profile = Profile.objects.get(pk=self.pk)
-            old_img_path = old_profile.image.path
-            not_defaut = old_profile.image.name != "default.png"
-            not_same = old_img_path != self.image.path
-
-            if not_defaut and not_same:
-                if os.path.exists(old_img_path):
-                    os.remove(old_img_path)
-        except Profile.DoesNotExist:
-            pass
-
         super().save(*args, **kwargs)
 
         img = Image.open(self.image.path)
